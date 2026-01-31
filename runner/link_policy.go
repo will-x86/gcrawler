@@ -116,6 +116,10 @@ func (p *maxPerDomainPolicy) ShouldEnqueue(currentURL *url.URL, targetURL string
 	}
 
 	host := parsed.Host
+	if host == "" {
+		return false
+	}
+
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
@@ -158,26 +162,25 @@ type maxDepthPolicy struct {
 }
 
 func (p *maxDepthPolicy) ShouldEnqueue(currentURL *url.URL, targetURL string) bool {
+	parsed, err := url.Parse(targetURL)
+	if err != nil || parsed.Host == "" {
+		return false
+	}
+
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	// Get current URL's depth (defaults to 0 for seeds)
 	currentDepth := p.urlDepths[currentURL.String()]
-
-	// Calculate target depth
 	targetDepth := currentDepth + 1
 
-	// Check if target depth exceeds max
 	if targetDepth > p.maxDepth {
 		return false
 	}
 
-	// Check inner policy if provided
 	if p.innerPolicy != nil && !p.innerPolicy.ShouldEnqueue(currentURL, targetURL) {
 		return false
 	}
 
-	// Store the target URL's depth
 	p.urlDepths[targetURL] = targetDepth
 	return true
 }

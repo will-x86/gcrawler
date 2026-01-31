@@ -1,5 +1,3 @@
-//go:build sqlite3
-
 package storage
 
 import (
@@ -37,15 +35,13 @@ func NewSQLiteQueue(opts SQLiteQueueOptions) (Queue, error) {
 		return nil, fmt.Errorf("failed to create db directory: %w", err)
 	}
 
-	// Enable WAL mode for concurrent reads
-	// _busy_timeout prevents immediate "database locked" errors
-	db, err := sql.Open("sqlite3", opts.DBPath+"?_journal_mode=WAL&_busy_timeout=5000")
+	db, err := sql.Open("sqlite3", opts.DBPath+"?_journal_mode=WAL&_busy_timeout=10000&_txlock=immediate")
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
 
-	db.SetMaxOpenConns(25)
-	db.SetMaxIdleConns(5)
+	db.SetMaxOpenConns(1)
+	db.SetMaxIdleConns(1)
 
 	if err := db.Ping(); err != nil {
 		return nil, fmt.Errorf("failed to ping database: %w", err)

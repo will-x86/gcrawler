@@ -77,7 +77,6 @@ func (r *AsyncRunner) Run(ctx context.Context, c crawler.Crawler, q storage.Queu
 	workersDone := make(chan struct{})
 	for i := 0; i < r.maxConcurrency; i++ {
 		wg.Add(1)
-		time.Sleep(1 * time.Second) // Stupid duplicating if one seed link
 		go func(workerID int) {
 			defer wg.Done()
 

@@ -32,7 +32,6 @@ func main() {
 
 	os.Remove("./example.db")
 
-	// (requires -tags sqlite3)
 	queue, err := storage.NewSQLiteQueue(storage.SQLiteQueueOptions{
 		DBPath:     "./example.db",
 		MaxRetries: 3,

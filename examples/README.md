@@ -162,7 +162,6 @@ Available via `hctx.Get()`:
 
 Most examples require only the base gcrawler module. Specific requirements:
 
-- **03-basic-http-sqlite**: Requires `-tags sqlite3` build flag 
 - **04-basic-chromedp**: Requires Chrome/Chromium installed
 
 

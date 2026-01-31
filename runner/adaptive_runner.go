@@ -196,7 +196,6 @@ func (r *AdaptiveRunner) Run(ctx context.Context, c crawler.Crawler, q storage.Q
 	workerStopChan := make(chan struct{}, r.maxWorkers)
 
 	for i := 0; i < r.minWorkers; i++ {
-		time.Sleep(1 * time.Second)
 		r.workerWg.Add(1)
 		go r.worker(ctx, i, c, q, workerStopChan)
 	}

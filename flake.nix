@@ -29,7 +29,6 @@
             gopkgs
             godef
             golint
-            turso-cli
           ];
 
           shellHook = ''

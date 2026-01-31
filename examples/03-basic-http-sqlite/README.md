@@ -1,10 +1,6 @@
 
 # Running:
 
-Must use:
-```bash
-go run -tags sqlite3 main.go
-```
 
 
 This basic example uses:
